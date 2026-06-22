@@ -11,6 +11,12 @@ public class SpeedBoostedNode extends Node
 {
     private Rotation currentRotation;
     private final float multiplier;
+    private boolean folding = true;
+
+    public void setFolding(boolean enable)
+    {
+        this.folding = enable;
+    }
 
     public SpeedBoostedNode(BlockPos pos, EnumSet<Direction> connections, float multiplier)
     {
@@ -33,6 +39,7 @@ public class SpeedBoostedNode extends Node
     public Rotation rotation()
     {
         if (!isConnectedToNetwork() || currentRotation == null) return super.rotation();
+        if (!folding) return new DisplayRotation(currentRotation, multiplier);
         return new SpeedBoostedRotation(currentRotation, multiplier);
     }
 
@@ -59,3 +66,4 @@ public class SpeedBoostedNode extends Node
         return value;
     }
 }
+

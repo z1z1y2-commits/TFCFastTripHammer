@@ -37,9 +37,14 @@ public class CrossBladedAxleBlockEntity extends BladedAxleBlockEntity
     }
     public Node getRotationNode()
     {
+        if (level != null && level.isClientSide)
+        {
+            boostedNode.setFolding(false);
+        }
         return boostedNode;
     }
 }
+
 
 
 
