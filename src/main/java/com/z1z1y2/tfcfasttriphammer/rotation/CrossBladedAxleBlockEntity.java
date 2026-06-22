@@ -7,17 +7,20 @@ import net.dries007.tfc.common.blockentities.rotation.BladedAxleBlockEntity;
 import net.dries007.tfc.util.rotation.Node;
 import java.util.EnumSet;
 
+/**
+ * Block entity for Cross Bladed Axle. Uses SpeedBoostedNode which now simply
+ * passes through the real Rotation. The 4x Trip Hammer frequency is achieved
+ * via the TripHammerBlockEntityMixin which detects crossings at 4 angles.
+ */
 public class CrossBladedAxleBlockEntity extends BladedAxleBlockEntity
 {
     private final SpeedBoostedNode boostedNode;
 
-    // 2-param constructor for BlockEntityType.BlockEntitySupplier
     public CrossBladedAxleBlockEntity(BlockPos pos, BlockState state)
     {
         this((BlockEntityType<?>) null, pos, state);
     }
 
-    // 3-param constructor for internal use
     public CrossBladedAxleBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
         super(type != null ? type : com.z1z1y2.tfcfasttriphammer.ModRegistry.CROSS_BLADED_AXLE_BE.get(), pos, state);
@@ -30,22 +33,8 @@ public class CrossBladedAxleBlockEntity extends BladedAxleBlockEntity
     }
 
     @Override
-    public float getRotationAngle(float partialTick)
-    {
-        // Return REAL angle for renderer (not folded 4x angle from SpeedBoostedRotation)
-        return boostedNode.angle(partialTick);
-    }
     public Node getRotationNode()
     {
-        if (level != null && level.isClientSide)
-        {
-            boostedNode.setFolding(false);
-        }
         return boostedNode;
     }
 }
-
-
-
-
-

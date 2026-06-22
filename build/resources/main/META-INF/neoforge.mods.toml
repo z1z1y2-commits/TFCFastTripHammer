@@ -11,6 +11,9 @@ description='''
 A TFC addon that boosts Trip Hammer speed by 4x and changes Bladed Axle to a cross-shaped blade.
 '''
 
+[[mixins]]
+config = "tfcfasttriphammer.mixins.json"
+
 [[dependencies.tfcfasttriphammer]]
 modId="neoforge"
 type="required"

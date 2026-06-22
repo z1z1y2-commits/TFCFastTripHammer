@@ -61,8 +61,6 @@ neoForge {
 
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-            // Register mixin config for dev environment (production uses mods.toml properties)
-            systemProperty 'mixin.configs', 'tfcfasttriphammer.mixins.json'
         }
 
         server {

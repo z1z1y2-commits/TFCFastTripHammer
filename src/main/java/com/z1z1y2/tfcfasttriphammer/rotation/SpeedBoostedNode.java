@@ -7,63 +7,21 @@ import net.dries007.tfc.util.rotation.Rotation;
 
 import java.util.EnumSet;
 
+/**
+ * A simple Node subclass that passes through the real Rotation without any folding or speed boosting.
+ * The 4x detection frequency is now handled by the TripHammerBlockEntityMixin which checks
+ * 4 crossing angles (0, 90, 180, 270) directly in serverTick.
+ */
 public class SpeedBoostedNode extends Node
 {
-    private Rotation currentRotation;
-    private final float multiplier;
-    private boolean folding = true;
-
-    public void setFolding(boolean enable)
-    {
-        this.folding = enable;
-    }
-
     public SpeedBoostedNode(BlockPos pos, EnumSet<Direction> connections, float multiplier)
     {
         super(pos, connections);
-        this.multiplier = multiplier;
     }
 
-    public boolean update(long networkId, Direction from, Rotation rot)
-    {
-        this.currentRotation = rot;
-        return super.update(networkId, from, rot);
-    }
-
-    public void setRotationFromOutsideWorld()
-    {
-        this.currentRotation = Rotation.ofFake();
-        super.setRotationFromOutsideWorld();
-    }
-
-    public Rotation rotation()
-    {
-        if (!isConnectedToNetwork() || currentRotation == null) return super.rotation();
-        if (!folding) return new DisplayRotation(currentRotation, multiplier);
-        return new SpeedBoostedRotation(currentRotation, multiplier);
-    }
-
-    public float angle(float partialTick)
-    {
-        if (!isConnectedToNetwork() || currentRotation == null) return 0;
-        return currentRotation.angle(partialTick);
-    }
-
-    public float speed()
-    {
-        if (!isConnectedToNetwork() || currentRotation == null) return 0;
-        return currentRotation.speed();
-    }
-
-    public Direction direction()
-    {
-        if (!isConnectedToNetwork() || currentRotation == null) return Direction.NORTH;
-        return currentRotation.direction();
-    }
-
+    @Override
     public Rotation rotation(Rotation value, Direction from, Direction to)
     {
         return value;
     }
 }
-
