@@ -7,7 +7,6 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import org.slf4j.Logger;
 
 import com.z1z1y2.tfcfasttriphammer.client.CrossBladedAxleRenderer;
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 
 @Mod(TFCFastTripHammer.MOD_ID)
 public final class TFCFastTripHammer
@@ -17,15 +16,25 @@ public final class TFCFastTripHammer
 
     public TFCFastTripHammer(IEventBus modEventBus)
     {
-        LOGGER.info("{} loaded - Trip Hammer 4x speed (reflection) and Bladed Axle cross-blade model active.", MOD_ID);
+        // Initialize all registries
+        ModRegistry.init();
+        ModRegistry.BLOCKS.register(modEventBus);
+        ModRegistry.ITEMS.register(modEventBus);
+        ModRegistry.BLOCK_ENTITIES.register(modEventBus);
+        ModRegistry.CREATIVE_TABS.register(modEventBus);
 
-        // Register custom BlockEntityRenderer for Bladed Axle (cross-shaped blades)
+        // Register renderer event
         modEventBus.addListener(this::onRegisterRenderers);
+
+        LOGGER.info("{} loaded.", MOD_ID);
     }
 
     private void onRegisterRenderers(final EntityRenderersEvent.RegisterRenderers event)
     {
-        event.registerBlockEntityRenderer(TFCBlockEntities.BLADED_AXLE.get(), CrossBladedAxleRenderer::new);
-        LOGGER.info("Registered cross-blade renderer for Bladed Axle.");
+        if (ModRegistry.CROSS_BLADED_AXLE_BE != null && ModRegistry.CROSS_BLADED_AXLE_BE.get() != null)
+        {
+            event.registerBlockEntityRenderer(ModRegistry.CROSS_BLADED_AXLE_BE.get(), CrossBladedAxleRenderer::new);
+            LOGGER.info("Registered cross-blade renderer.");
+        }
     }
 }

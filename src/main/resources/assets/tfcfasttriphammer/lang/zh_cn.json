@@ -1,3 +1,23 @@
 {
-  "mod.tfcfasttriphammer": "TFC 快速锻锤"
+  "itemGroup.tfcfasttriphammer": "TFC 快速锻锤",
+  "block.tfcfasttriphammer.cross_bladed_axle.acacia": "金合欢木十字叶片传动杆",
+  "block.tfcfasttriphammer.cross_bladed_axle.ash": "白蜡木十字叶片传动杆",
+  "block.tfcfasttriphammer.cross_bladed_axle.aspen": "白杨木十字叶片传动杆",
+  "block.tfcfasttriphammer.cross_bladed_axle.birch": "桦木十字叶片传动杆",
+  "block.tfcfasttriphammer.cross_bladed_axle.blackwood": "黑木十字叶片传动杆",
+  "block.tfcfasttriphammer.cross_bladed_axle.chestnut": "栗木十字叶片传动杆",
+  "block.tfcfasttriphammer.cross_bladed_axle.douglas_fir": "花旗松十字叶片传动杆",
+  "block.tfcfasttriphammer.cross_bladed_axle.hickory": "山核桃木十字叶片传动杆",
+  "block.tfcfasttriphammer.cross_bladed_axle.kapok": "木棉木十字叶片传动杆",
+  "block.tfcfasttriphammer.cross_bladed_axle.mangrove": "红树木十字叶片传动杆",
+  "block.tfcfasttriphammer.cross_bladed_axle.maple": "枫木十字叶片传动杆",
+  "block.tfcfasttriphammer.cross_bladed_axle.oak": "橡木十字叶片传动杆",
+  "block.tfcfasttriphammer.cross_bladed_axle.palm": "棕榈木十字叶片传动杆",
+  "block.tfcfasttriphammer.cross_bladed_axle.pine": "松木十字叶片传动杆",
+  "block.tfcfasttriphammer.cross_bladed_axle.rosewood": "玫瑰木十字叶片传动杆",
+  "block.tfcfasttriphammer.cross_bladed_axle.sequoia": "红杉木十字叶片传动杆",
+  "block.tfcfasttriphammer.cross_bladed_axle.spruce": "云杉木十字叶片传动杆",
+  "block.tfcfasttriphammer.cross_bladed_axle.sycamore": "无花果木十字叶片传动杆",
+  "block.tfcfasttriphammer.cross_bladed_axle.white_cedar": "白雪松木十字叶片传动杆",
+  "block.tfcfasttriphammer.cross_bladed_axle.willow": "柳木十字叶片传动杆"
 }

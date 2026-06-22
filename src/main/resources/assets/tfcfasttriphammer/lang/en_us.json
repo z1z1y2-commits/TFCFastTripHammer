@@ -1,3 +1,23 @@
 {
-  "mod.tfcfasttriphammer": "TFC Fast Trip Hammer"
+  "itemGroup.tfcfasttriphammer": "TFC Fast Trip Hammer",
+  "block.tfcfasttriphammer.cross_bladed_axle.acacia": "Acacia Cross Bladed Axle",
+  "block.tfcfasttriphammer.cross_bladed_axle.ash": "Ash Cross Bladed Axle",
+  "block.tfcfasttriphammer.cross_bladed_axle.aspen": "Aspen Cross Bladed Axle",
+  "block.tfcfasttriphammer.cross_bladed_axle.birch": "Birch Cross Bladed Axle",
+  "block.tfcfasttriphammer.cross_bladed_axle.blackwood": "Blackwood Cross Bladed Axle",
+  "block.tfcfasttriphammer.cross_bladed_axle.chestnut": "Chestnut Cross Bladed Axle",
+  "block.tfcfasttriphammer.cross_bladed_axle.douglas_fir": "Douglas Fir Cross Bladed Axle",
+  "block.tfcfasttriphammer.cross_bladed_axle.hickory": "Hickory Cross Bladed Axle",
+  "block.tfcfasttriphammer.cross_bladed_axle.kapok": "Kapok Cross Bladed Axle",
+  "block.tfcfasttriphammer.cross_bladed_axle.mangrove": "Mangrove Cross Bladed Axle",
+  "block.tfcfasttriphammer.cross_bladed_axle.maple": "Maple Cross Bladed Axle",
+  "block.tfcfasttriphammer.cross_bladed_axle.oak": "Oak Cross Bladed Axle",
+  "block.tfcfasttriphammer.cross_bladed_axle.palm": "Palm Cross Bladed Axle",
+  "block.tfcfasttriphammer.cross_bladed_axle.pine": "Pine Cross Bladed Axle",
+  "block.tfcfasttriphammer.cross_bladed_axle.rosewood": "Rosewood Cross Bladed Axle",
+  "block.tfcfasttriphammer.cross_bladed_axle.sequoia": "Sequoia Cross Bladed Axle",
+  "block.tfcfasttriphammer.cross_bladed_axle.spruce": "Spruce Cross Bladed Axle",
+  "block.tfcfasttriphammer.cross_bladed_axle.sycamore": "Sycamore Cross Bladed Axle",
+  "block.tfcfasttriphammer.cross_bladed_axle.white_cedar": "White Cedar Cross Bladed Axle",
+  "block.tfcfasttriphammer.cross_bladed_axle.willow": "Willow Cross Bladed Axle"
 }

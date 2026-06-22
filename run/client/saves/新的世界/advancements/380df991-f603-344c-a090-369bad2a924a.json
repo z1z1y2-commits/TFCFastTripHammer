@@ -42,18 +42,6 @@
     },
     "done": true
   },
-  "tfc:story/iron_age": {
-    "criteria": {
-      "metal/ingot/wrought_iron": "2026-06-22 17:05:28 +0800"
-    },
-    "done": true
-  },
-  "minecraft:recipes/decorations/campfire": {
-    "criteria": {
-      "has_coal": "2026-06-22 16:58:30 +0800"
-    },
-    "done": true
-  },
   "minecraft:recipes/building_blocks/stone_brick_slab": {
     "criteria": {
       "has_stone_bricks": "2026-06-22 16:58:24 +0800"
@@ -63,6 +51,24 @@
   "minecraft:recipes/building_blocks/stone_brick_stairs": {
     "criteria": {
       "has_stone_bricks": "2026-06-22 16:58:24 +0800"
+    },
+    "done": true
+  },
+  "minecraft:recipes/building_blocks/chiseled_stone_bricks": {
+    "criteria": {
+      "has_tag": "2026-06-22 16:58:24 +0800"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/campfire": {
+    "criteria": {
+      "has_coal": "2026-06-22 16:58:30 +0800"
+    },
+    "done": true
+  },
+  "tfc:story/charcoal": {
+    "criteria": {
+      "charcoal": "2026-06-22 16:58:30 +0800"
     },
     "done": true
   },
@@ -78,21 +84,39 @@
     },
     "done": true
   },
-  "minecraft:recipes/building_blocks/chiseled_stone_bricks": {
-    "criteria": {
-      "has_tag": "2026-06-22 16:58:24 +0800"
-    },
-    "done": true
-  },
   "minecraft:recipes/decorations/chest": {
     "criteria": {
       "has_lots_of_items": "2026-06-22 16:59:25 +0800"
     },
     "done": true
   },
-  "tfc:story/charcoal": {
+  "tfc:story/iron_age": {
     "criteria": {
-      "charcoal": "2026-06-22 16:58:30 +0800"
+      "metal/ingot/wrought_iron": "2026-06-22 17:05:28 +0800"
+    },
+    "done": true
+  },
+  "firmalife:story/baller": {
+    "criteria": {
+      "seed_ball": "2026-06-22 17:49:31 +0800"
+    },
+    "done": true
+  },
+  "firmalife:story/root": {
+    "criteria": {
+      "in_game_condition": "2026-06-22 17:49:32 +0800"
+    },
+    "done": true
+  },
+  "tfc:story/red_steel": {
+    "criteria": {
+      "tools/red_steel": "2026-06-22 17:50:11 +0800"
+    },
+    "done": true
+  },
+  "tfc:story/pickaxe": {
+    "criteria": {
+      "pickaxes": "2026-06-22 17:50:11 +0800"
     },
     "done": true
   },
