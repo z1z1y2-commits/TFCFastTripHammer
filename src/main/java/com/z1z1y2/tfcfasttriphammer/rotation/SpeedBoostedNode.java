@@ -32,25 +32,25 @@ public class SpeedBoostedNode extends Node
 
     public Rotation rotation()
     {
-        if (currentRotation == null) return super.rotation();
+        if (!isConnectedToNetwork() || currentRotation == null) return super.rotation();
         return new SpeedBoostedRotation(currentRotation, multiplier);
     }
 
     public float angle(float partialTick)
     {
-        if (currentRotation == null) return 0;
+        if (!isConnectedToNetwork() || currentRotation == null) return 0;
         return currentRotation.angle(partialTick);
     }
 
     public float speed()
     {
-        if (currentRotation == null) return 0;
+        if (!isConnectedToNetwork() || currentRotation == null) return 0;
         return currentRotation.speed();
     }
 
     public Direction direction()
     {
-        if (currentRotation == null) return Direction.NORTH;
+        if (!isConnectedToNetwork() || currentRotation == null) return Direction.NORTH;
         return currentRotation.direction();
     }
 

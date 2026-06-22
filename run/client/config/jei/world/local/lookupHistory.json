@@ -1,5 +1,6 @@
 [
   {"version":1},
+  {"ingredient":{"id":"tfc:trip_hammer"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"tfc:wood/bladed_axle/oak"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"tfcfasttriphammer:cross_bladed_axle/sycamore"},"type":"item_stack","bookmarkType":"INGREDIENT"},
   {"ingredient":{"id":"tfc:wood/bladed_axle/spruce"},"type":"item_stack","bookmarkType":"INGREDIENT"},

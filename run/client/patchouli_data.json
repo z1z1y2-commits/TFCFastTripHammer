@@ -4,7 +4,8 @@
   "bookData": {
     "tfc:field_guide": {
       "viewedEntries": [
-        "tfc:mechanics/papermaking"
+        "tfc:mechanics/papermaking",
+        "tfc:mechanics/bellows"
       ],
       "bookmarks": [],
       "completedManualQuests": []

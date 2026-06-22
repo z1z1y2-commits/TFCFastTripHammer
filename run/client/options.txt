@@ -164,7 +164,7 @@ key_tfc.key.place_block:key.keyboard.v
 key_tfc.key.cycle_chisel_mode:key.keyboard.m
 key_tfc.key.stack_food:key.keyboard.i
 soundCategory_master:1.0
-soundCategory_music:1.0
+soundCategory_music:0.0
 soundCategory_record:1.0
 soundCategory_weather:1.0
 soundCategory_block:1.0
