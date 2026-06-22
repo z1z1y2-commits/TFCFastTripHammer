@@ -20,7 +20,7 @@ public record SpeedBoostedRotation(Rotation delegate, float multiplier) implemen
     @Override
     public float speed()
     {
-        return delegate.speed(); // NO boost - original cooldown
+        return delegate.speed() * multiplier;
     }
 
     @Override
@@ -29,4 +29,5 @@ public record SpeedBoostedRotation(Rotation delegate, float multiplier) implemen
         return delegate.direction();
     }
 }
+
 

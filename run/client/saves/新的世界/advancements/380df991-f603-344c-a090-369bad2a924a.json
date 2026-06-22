@@ -120,5 +120,11 @@
     },
     "done": true
   },
+  "tfc:story/forge": {
+    "criteria": {
+      "special_condition": "2026-06-23 01:06:07 +0800"
+    },
+    "done": true
+  },
   "DataVersion": 3955
 }
