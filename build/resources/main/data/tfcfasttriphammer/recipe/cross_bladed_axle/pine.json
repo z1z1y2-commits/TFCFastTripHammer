@@ -1,1 +1,1 @@
-{"type":"minecraft:crafting_shapeless","category":"misc","ingredients":[{"item":"tfc:wood/axle/pine"},{"tag":"c:ingots/steel"}],"result":{"count":1,"id":"tfcfasttriphammer:cross_bladed_axle/pine"}}
+{"type":"minecraft:crafting_shapeless","category":"misc","ingredients":[{"item":"tfc:wood/axle/pine"},{"tag":"c:ingots/wrought_iron"}],"result":{"count":1,"id":"tfcfasttriphammer:cross_bladed_axle/pine"}}
