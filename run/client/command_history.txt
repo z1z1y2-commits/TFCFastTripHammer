@@ -1,3 +1,0 @@
-/gamemode survival
-/gamemode creative
-/time add hours 3
