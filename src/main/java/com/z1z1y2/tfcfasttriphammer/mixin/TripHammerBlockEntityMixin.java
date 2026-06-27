@@ -1,7 +1,6 @@
 package com.z1z1y2.tfcfasttriphammer.mixin;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -20,11 +19,25 @@ import net.dries007.tfc.common.blockentities.rotation.TripHammerBlockEntity;
 import net.dries007.tfc.common.blocks.TripHammerBlock;
 import net.dries007.tfc.common.blocks.devices.AnvilBlock;
 import net.dries007.tfc.common.component.forge.ForgeStep;
+import net.dries007.tfc.common.component.forge.Forging;
+import net.dries007.tfc.common.component.forge.ForgingBonus;
+import net.dries007.tfc.common.component.forge.ForgingBonusComponent;
+import net.dries007.tfc.common.component.forge.ForgingCapability;
+import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.rotation.Rotation;
 
+import com.z1z1y2.tfcfasttriphammer.Config;
+import com.z1z1y2.tfcfasttriphammer.TFCFastTripHammer;
+import com.z1z1y2.tfcfasttriphammer.forge.AnvilRecipeInfo;
+import com.z1z1y2.tfcfasttriphammer.forge.AnvilSolution;
+import com.z1z1y2.tfcfasttriphammer.forge.AnvilSolver;
 import com.z1z1y2.tfcfasttriphammer.rotation.CrossBladedAxleBlockEntity;
+
+import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 @Mixin(TripHammerBlockEntity.class)
 public abstract class TripHammerBlockEntityMixin
@@ -38,13 +51,9 @@ public abstract class TripHammerBlockEntityMixin
     private static final float[] TARGET_ANGLES = {0f, 90f, 180f, 270f};
     private static final float ORIGINAL_TARGET = 180f;
 
-    /**
-     * Replaces the original serverTick to detect blade crossings at 4 angles (0, 90, 180, 270)
-     * when a Cross Bladed Axle is above, achieving 4x work frequency.
-     * Cooldown is also divided by 4 for cross blades to allow 4 triggers per full rotation.
-     * @author z1z1y2
-     * @reason Enable 4x Trip Hammer work frequency with Cross Bladed Axle
-     */
+    // Cache AnvilRecipeInfo by AnvilRecipe reference to avoid recomputing on every hammer hit
+    private static final Map<AnvilRecipe, AnvilRecipeInfo> RECIPE_INFO_CACHE = new WeakHashMap<>();
+
     @Overwrite(remap = false)
     public static void serverTick(Level level, BlockPos pos, BlockState state, TripHammerBlockEntity hammer)
     {
@@ -165,7 +174,18 @@ public abstract class TripHammerBlockEntityMixin
             {
                 level.playSound(null, pos, TFCSounds.ANVIL_HIT.get(),
                     SoundSource.BLOCKS, 0.4f, 0.2f);
-                if (anvil.workRemotely(ForgeStep.HIT_LIGHT, 12, true))
+
+                boolean worked;
+                if (Config.autoForge())
+                {
+                    worked = doAutoForge(level, anvil, stack);
+                }
+                else
+                {
+                    worked = anvil.workRemotely(ForgeStep.HIT_LIGHT, 12, true);
+                }
+
+                if (worked)
                 {
                     Helpers.damageItem(stack, level);
                     hammer.markForSync();
@@ -175,11 +195,108 @@ public abstract class TripHammerBlockEntityMixin
                 {
                     level.playSound(null, pos, SoundEvents.ITEM_BREAK, SoundSource.BLOCKS);
                 }
-                // For cross blades, divide cooldown by 4 so all 4 targets can trigger per rotation
                 int cooldown = Mth.ceil(5.0265484f / rotation.positiveSpeed());
-                if (isCrossBlade) cooldown = (cooldown + 3) / 4; // ceiling division by 4
+                if (isCrossBlade) cooldown = (cooldown + 3) / 4;
                 accessor.setCooldownTicks(cooldown);
             }
+        }
+    }
+
+    /**
+     * Auto-forge logic: solve the recipe and execute the correct next ForgeStep.
+     * Returns true if the hammer hit was applied successfully.
+     * After recipe completion, sets ForgingBonus on the output if the recipe allows it.
+     */
+    private static boolean doAutoForge(Level level, AnvilBlockEntity anvil, ItemStack hammerStack)
+    {
+        var inventory = (net.dries007.tfc.common.blockentities.AnvilBlockEntity.AnvilInventory) anvil.getInventory();
+        ItemStack inputStack = inventory.getStackInSlot(AnvilBlockEntity.SLOT_INPUT_MAIN);
+        if (inputStack.isEmpty()) return false;
+
+        Forging forging = ForgingCapability.get(inputStack);
+        if (forging == null) return false;
+
+        // If no recipe is selected, try to auto-match one
+        AnvilRecipe recipe = forging.getRecipe();
+        if (recipe == null)
+        {
+            int tier = anvil.getTier();
+            List<net.minecraft.world.item.crafting.RecipeHolder<AnvilRecipe>> recipes =
+                AnvilRecipe.getAll(level, inputStack, tier);
+            if (recipes.isEmpty()) return false;
+            net.minecraft.world.item.crafting.RecipeHolder<AnvilRecipe> holder = recipes.get(0);
+            forging.setRecipe(holder, inventory);
+            recipe = holder.value();
+        }
+
+        // Get or cache the recipe info
+        AnvilRecipeInfo recipeInfo = RECIPE_INFO_CACHE.get(recipe);
+        if (recipeInfo == null)
+        {
+            recipeInfo = AnvilRecipeInfo.getRecipeInfo(recipe);
+            RECIPE_INFO_CACHE.put(recipe, recipeInfo);
+        }
+
+        // Solve the step sequence
+        AnvilSolution solution = AnvilSolver.solveFor(recipeInfo, forging);
+        if (solution == AnvilSolution.UNDEFINED)
+        {
+            // Can't solve this recipe, fall back to HIT_LIGHT
+            return anvil.workRemotely(ForgeStep.HIT_LIGHT, 12, true);
+        }
+
+        // Find the next step to execute
+        int stepIndex = solution.getStepForForging(forging);
+        if (stepIndex < 0 || stepIndex >= solution.forgeSteps().length)
+        {
+            // No matching step found, fall back to HIT_LIGHT
+            return anvil.workRemotely(ForgeStep.HIT_LIGHT, 12, true);
+        }
+
+       ForgeStep nextStep = solution.forgeSteps()[stepIndex];
+       int force = nextStep.step();
+
+       // Record input before work to detect recipe completion
+       ItemStack inputBefore = inputStack.copy();
+
+       // forceToTarget=false: the solver already computes steps that land exactly on target.
+       // Using true would clamp/negate forces when work temporarily exceeds target (needed
+       // for rule-constrained steps like DRAW_LAST), breaking the solved sequence.
+       boolean worked = anvil.workRemotely(nextStep, force, false);
+
+       // Check if the recipe completed (item in slot changed)
+        if (worked)
+        {
+            ItemStack outputNow = inventory.getStackInSlot(AnvilBlockEntity.SLOT_INPUT_MAIN);
+            if (!outputNow.isEmpty() && !ItemStack.isSameItemSameComponents(inputBefore, outputNow))
+            {
+                // Recipe completed — apply ForgingBonus if the recipe allows it
+                applyForgingBonusIfNeeded(recipe, outputNow);
+                anvil.markForSync();
+            }
+        }
+
+        return worked;
+    }
+
+    /**
+     * Sets the configured ForgingBonus on the output stack, but only if the recipe
+     * originally supports a forging bonus. Items that can't get a bonus stay without one.
+     */
+    private static void applyForgingBonusIfNeeded(AnvilRecipe recipe, ItemStack output)
+    {
+        if (!recipe.shouldApplyForgingBonus()) return;
+
+        int bonusLevel = Config.forgingBonus();
+        if (bonusLevel <= 0) return;
+
+        ForgingBonus[] bonuses = ForgingBonus.values();
+        if (bonusLevel >= bonuses.length) bonusLevel = bonuses.length - 1;
+
+        ForgingBonus targetBonus = bonuses[bonusLevel];
+        if (targetBonus != ForgingBonus.NONE)
+        {
+            ForgingBonusComponent.set(output, targetBonus);
         }
     }
 }

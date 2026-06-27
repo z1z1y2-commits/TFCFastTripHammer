@@ -14,8 +14,11 @@ public final class TFCFastTripHammer
     public static final String MOD_ID = "tfcfasttriphammer";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public TFCFastTripHammer(IEventBus modEventBus)
+    public TFCFastTripHammer(net.neoforged.fml.ModContainer modContainer, IEventBus modEventBus)
     {
+        // Register config
+        modContainer.registerConfig(net.neoforged.fml.config.ModConfig.Type.COMMON, Config.SPEC);
+
         // Initialize all registries
         ModRegistry.init();
         ModRegistry.BLOCKS.register(modEventBus);
