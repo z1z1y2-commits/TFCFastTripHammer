@@ -213,24 +213,17 @@ public abstract class TripHammerBlockEntityMixin
         ItemStack inputStack = inventory.getStackInSlot(AnvilBlockEntity.SLOT_INPUT_MAIN);
         if (inputStack.isEmpty()) return false;
 
-        Forging forging = ForgingCapability.get(inputStack);
-        if (forging == null) return false;
+       Forging forging = ForgingCapability.get(inputStack);
+       if (forging == null) return false;
 
-        // If no recipe is selected, try to auto-match one
+        // If no recipe is selected, wait for the player to choose one via the anvil GUI.
+        // TFC's setAndUpdateSlots already auto-selects single matches and remembers lastRecipe,
+        // so a null recipe here means multiple recipes are available and the player hasn't picked yet.
         AnvilRecipe recipe = forging.getRecipe();
-        if (recipe == null)
-        {
-            int tier = anvil.getTier();
-            List<net.minecraft.world.item.crafting.RecipeHolder<AnvilRecipe>> recipes =
-                AnvilRecipe.getAll(level, inputStack, tier);
-            if (recipes.isEmpty()) return false;
-            net.minecraft.world.item.crafting.RecipeHolder<AnvilRecipe> holder = recipes.get(0);
-            forging.setRecipe(holder, inventory);
-            recipe = holder.value();
-        }
+        if (recipe == null) return false;
 
-        // Get or cache the recipe info
-        AnvilRecipeInfo recipeInfo = RECIPE_INFO_CACHE.get(recipe);
+       // Get or cache the recipe info
+       AnvilRecipeInfo recipeInfo = RECIPE_INFO_CACHE.get(recipe);
         if (recipeInfo == null)
         {
             recipeInfo = AnvilRecipeInfo.getRecipeInfo(recipe);

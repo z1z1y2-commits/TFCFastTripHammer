@@ -22,3 +22,11 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# Maven构建输出目录
+/target/
+
+# Gradle构建输出目录
+/build/
+
+/run/
