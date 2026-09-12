@@ -30,6 +30,8 @@ import net.dries007.tfc.util.rotation.Rotation;
 
 import com.z1z1y2.tfcfasttriphammer.Config;
 import com.z1z1y2.tfcfasttriphammer.TFCFastTripHammer;
+import com.z1z1y2.tfcfasttriphammer.api.TripHammerAutomationRegistry;
+import com.z1z1y2.tfcfasttriphammer.api.TripHammerContext;
 import com.z1z1y2.tfcfasttriphammer.forge.AnvilRecipeInfo;
 import com.z1z1y2.tfcfasttriphammer.forge.AnvilSolution;
 import com.z1z1y2.tfcfasttriphammer.forge.AnvilSolver;
@@ -37,6 +39,7 @@ import com.z1z1y2.tfcfasttriphammer.rotation.CrossBladedAxleBlockEntity;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.WeakHashMap;
 
 @Mixin(TripHammerBlockEntity.class)
@@ -175,8 +178,23 @@ public abstract class TripHammerBlockEntityMixin
                 level.playSound(null, pos, TFCSounds.ANVIL_HIT.get(),
                     SoundSource.BLOCKS, 0.4f, 0.2f);
 
+                TripHammerContext context = new TripHammerContext(
+                    level, pos, state, hammer, rotation, anvil, stack, isCrossBlade);
+                Optional<Boolean> delegated = TripHammerAutomationRegistry.tryWork(context);
+
                 boolean worked;
-                if (Config.autoForge())
+                if (delegated.isPresent())
+                {
+                    worked = delegated.get();
+                }
+                else if (TripHammerAutomationRegistry.hasExclusiveController())
+                {
+                    // An exclusive external controller owns automation while it
+                    // is registered. Preserve vanilla-style single light hits
+                    // rather than falling back to FastTripHammer's solver.
+                    worked = anvil.workRemotely(ForgeStep.HIT_LIGHT, 12, true);
+                }
+                else if (Config.autoForge())
                 {
                     worked = doAutoForge(level, anvil, stack);
                 }
