@@ -4,11 +4,11 @@ license="All Rights Reserved"
 
 [[mods]]
 modId="tfcfasttriphammer"
-version="1.1.0"
+version="1.2.2"
 displayName="TFC Fast Trip Hammer"
 authors="z1z1y2"
 description='''
-A TFC addon that boosts Trip Hammer speed by 4x and changes Bladed Axle to a cross-shaped blade.
+A TFC addon that boosts Trip Hammer speed by 4x, changes Bladed Axle to a cross-shaped blade, provides configurable auto-forging, and exposes an automation handoff API.
 '''
 
 [[mixins]]
@@ -17,7 +17,7 @@ config = "tfcfasttriphammer.mixins.json"
 [[dependencies.tfcfasttriphammer]]
 modId="neoforge"
 type="required"
-versionRange="[21.1.219,)"
+versionRange="[21.1.234,)"
 ordering="NONE"
 side="BOTH"
 
