@@ -38,30 +38,33 @@ public abstract class TripHammerBlockEntityRendererMixin
     private static float computePivotAngle(boolean isNegative, float angle,
                                            float windowSize, float target, float narrowOffset)
     {
+        // Rotation.angle() is normalized to [0, 360), so target 0 crosses the
+        // wrap boundary. Compare the shortest signed distance instead of using
+        // raw intervals, which would only render the 0..narrowOffset tail.
+        float relative = angle - target;
+        while (relative >= 180f) relative -= 360f;
+        while (relative < -180f) relative += 360f;
+
         if (isNegative)
         {
-            float upper = target + windowSize;
-            float lower = target - narrowOffset;
-            if (angle > target && angle < upper)
+            if (relative > 0f && relative < windowSize)
             {
-                return 45f - Mth.map(angle, target, upper, 0f, 45f);
+                return 45f - Mth.map(relative, 0f, windowSize, 0f, 45f);
             }
-            if (angle > lower && angle < target)
+            if (relative > -narrowOffset && relative < 0f)
             {
-                return Mth.map(angle, lower, target, 0f, 45f);
+                return Mth.map(relative, -narrowOffset, 0f, 0f, 45f);
             }
         }
         else
         {
-            float lower = target - windowSize;
-            float upper = target + narrowOffset;
-            if (angle > lower && angle < target)
+            if (relative > -windowSize && relative < 0f)
             {
-                return Mth.map(angle, lower, target, 0f, 45f);
+                return Mth.map(relative, -windowSize, 0f, 0f, 45f);
             }
-            if (angle > target && angle < upper)
+            if (relative > 0f && relative < narrowOffset)
             {
-                return 45f - Mth.map(angle, target, upper, 0f, 45f);
+                return 45f - Mth.map(relative, 0f, narrowOffset, 0f, 45f);
             }
         }
         return 0f;
